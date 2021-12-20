@@ -38,30 +38,37 @@ fun game() {
             start_buttom(game_state)
         }
     }
+
     LaunchedEffect(Unit) {
         while (true) {
             withFrameNanos() {
+                println(game_state.clock)
                 if (game_state.start && !game_state.finish) {
                     //Thread.sleep(1000/60)
                     for (enemies in game_state.enemy_state) {
                         touch(game_state.me_state, enemies, game_state)
                         enemies.straight()
                     }
-                    if(game_state.clock!=0 && game_state.clock%500==0){
-                        game_state.enemy_state.add(enemy_data("sky"))
-                        println("addddddddd")
-                        for(enemies in game_state.enemy_state){
-                            enemies.init(fy=game_state.land_h)
+                    for(i in 0..game_state.enemy_state.size){
+                        if(game_state.enemy_state[i].x<0) {
+                            game_state.enemy_state.removeAt(i)
+                            println(game_state.enemy_state)
                         }
                     }
                     game_state.me_state.drop()
                     game_state.clock += 1
                 }
+                    if(game_state.clock!=0 && game_state.clock%300==0 ) {
+                        for (enemies in game_state.enemy_state) {
+                            if(enemies.x<0){
+                                enemies.init(fy=game_state.land_h)
+                            }
+                        }
+                    }
             }
         }
     }
 }
-
 @Composable
 @Preview
 fun me(me_state: me_data) {
