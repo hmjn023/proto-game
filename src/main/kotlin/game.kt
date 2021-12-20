@@ -20,6 +20,10 @@ import androidx.compose.ui.unit.dp
 fun game() {
     var game_state = remember { game_data() }
 
+    Column {
+        Text(game_state.clock.toString())
+    }
+
     if (!game_state.start) {
         start_buttom(game_state)
     }
@@ -42,17 +46,17 @@ fun game() {
     LaunchedEffect(Unit) {
         while (true) {
             withFrameNanos() {
-                println(game_state.clock)
                 if (game_state.start && !game_state.finish) {
                     //Thread.sleep(1000/60)
                     for (enemies in game_state.enemy_state) {
                         touch(game_state.me_state, enemies, game_state)
                         enemies.straight()
                     }
-                    for(i in 0..game_state.enemy_state.size){
-                        if(game_state.enemy_state[i].x<0) {
-                            game_state.enemy_state.removeAt(i)
-                            println(game_state.enemy_state)
+
+                    for(i in 0 until  game_state.enemy_state.size ){
+                        //println(game_state.enemy_state[i])
+                        if(game_state.enemy_state[i].x+game_state.enemy_state[i].size_x <0){
+                            game_state.enemy_state.remove(game_state.enemy_state[i])
                         }
                     }
                     game_state.me_state.drop()
@@ -60,8 +64,8 @@ fun game() {
                 }
                     if(game_state.clock!=0 && game_state.clock%300==0 ) {
                         for (enemies in game_state.enemy_state) {
-                            if(enemies.x<0){
-                                enemies.init(fy=game_state.land_h)
+                            if(enemies.x<0) {
+                                enemies.init(fy = game_state.land_h)
                             }
                         }
                     }
