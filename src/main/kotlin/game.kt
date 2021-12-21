@@ -55,7 +55,7 @@ fun game() {
                     for(enemies in game_state.enemy_state){
                         if(enemies.x+enemies.size_x<0){
                             game_state.enemy_state.remove(enemies)
-                            println("removed!!!")
+                            //println("removed!!!")
                         }
                     }
                     game_state.me_state.drop()
@@ -63,11 +63,9 @@ fun game() {
                 }
                     if(game_state.clock!=0 && game_state.clock%300==0 ) {
                         game_state.enemy_state.add(enemy_data())
-                        println(game_state.enemy_state)
                         for (enemies in game_state.enemy_state) {
-                            if(enemies.x<0) {
-                                enemies.init(fy = game_state.land_h)
-                            }
+                            enemies.init(fy = game_state.land_h)
+                            println(enemies.y)
                         }
                     }
             }
