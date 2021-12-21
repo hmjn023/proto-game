@@ -30,7 +30,7 @@ fun game() {
 
     if (game_state.start && !game_state.finish) {
         bbox(game_state.me_state, game_state)
-        for (enemies in game_state.enemy_state) {
+        for (enemies in game_state.enemy_state.filterNotNull()) {
             enemy(enemies)
         }
         land_surface(game_state)
@@ -48,21 +48,22 @@ fun game() {
             withFrameNanos() {
                 if (game_state.start && !game_state.finish) {
                     //Thread.sleep(1000/60)
-                    for (enemies in game_state.enemy_state) {
+                    for (enemies in game_state.enemy_state.filterNotNull()) {
                         touch(game_state.me_state, enemies, game_state)
                         enemies.straight()
                     }
-
-                    for(i in 0 until  game_state.enemy_state.size ){
-                        //println(game_state.enemy_state[i])
-                        if(game_state.enemy_state[i].x+game_state.enemy_state[i].size_x <0){
-                            game_state.enemy_state.remove(game_state.enemy_state[i])
+                    for(enemies in game_state.enemy_state){
+                        if(enemies.x+enemies.size_x<0){
+                            game_state.enemy_state.remove(enemies)
+                            println("removed!!!")
                         }
                     }
                     game_state.me_state.drop()
                     game_state.clock += 1
                 }
                     if(game_state.clock!=0 && game_state.clock%300==0 ) {
+                        game_state.enemy_state.add(enemy_data())
+                        println(game_state.enemy_state)
                         for (enemies in game_state.enemy_state) {
                             if(enemies.x<0) {
                                 enemies.init(fy = game_state.land_h)
