@@ -52,22 +52,28 @@ fun game() {
                         touch(game_state.me_state, enemies, game_state)
                         enemies.straight()
                     }
-                    for(enemies in game_state.enemy_state){
-                        if(enemies.x+enemies.size_x<0){
-                            game_state.enemy_state.remove(enemies)
-                            //println("removed!!!")
+                    if(game_state.enemy_state.size!=0){
+                        for(enemies in game_state.enemy_state.filterNotNull()){
+                            if(enemies.x+enemies.size_x<0){
+                                game_state.enemy_state.remove(enemies)
+                                //println("removed!!!")
+                            }
                         }
+                    }
+                    if(game_state.clock!=0 && game_state.clock-game_state.last_e_clock==game_state.interval) {
+                        if((0..1).random()==0){
+                            game_state.enemy_state.add(enemy_data())
+                        }
+                        else{
+                            game_state.enemy_state.add(enemy_data("sky"))
+                        }
+                        game_state.last_e_clock=game_state.clock
+                        game_state.interval=(100..400).random()
+                        game_state.enemy_state[game_state.enemy_state.size - 1].init(fy=game_state.land_h)
                     }
                     game_state.me_state.drop()
                     game_state.clock += 1
                 }
-                    if(game_state.clock!=0 && game_state.clock%300==0 ) {
-                        game_state.enemy_state.add(enemy_data())
-                        for (enemies in game_state.enemy_state) {
-                            enemies.init(fy = game_state.land_h)
-                            println(enemies.y)
-                        }
-                    }
             }
         }
     }
@@ -79,14 +85,14 @@ fun me(me_state: me_data) {
         Modifier
             .offset(me_state.x.dp,me_state.y.dp)
             .size(me_state.size_x.dp,me_state.size_y.dp)
-            .background(Color.Blue)
+            //.background(Color.Blue)
     ) {
         Column {
             //Text(me_state.x.toString())
             //Text(me_state.y.toString())
             //Text(me_state.state_y.toString())
             Image(
-                painter=painterResource("win.png"),
+                painter=painterResource("president.png"),
                 contentDescription = "win",
                 modifier = Modifier.fillMaxSize()
             )
@@ -101,13 +107,13 @@ fun enemy(enemy_state:enemy_data){
       Modifier
           .offset(enemy_state.x.dp,enemy_state.y.dp)
           .size(enemy_state.size_x.dp,enemy_state.size_y.dp)
-          .background(Color.Red)
+          //.background(Color.Red)
     ){
         Column {
             //Text(enemy_state.x.toString())
             //Text(enemy_state.y.toString())
             Image(
-                painter = painterResource("BSW.jpg"),
+                painter = painterResource("pig.png"),
                 contentDescription ="sample",
                 modifier = Modifier.fillMaxSize()
             )
@@ -165,7 +171,6 @@ fun touch(me_state: me_data,enemy_state: enemy_data,game_state:game_data){
 
     if(xkasanari && ykasanari){
             game_state.finishing()
-            println(game_state.finish)
         }
 }
 

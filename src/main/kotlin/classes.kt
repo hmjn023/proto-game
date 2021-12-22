@@ -1,5 +1,4 @@
 import androidx.compose.runtime.*
-import java.lang.reflect.Type
 
 class me_data() {
     var size_x by mutableStateOf(50)
@@ -13,15 +12,15 @@ class me_data() {
 
     var land by mutableStateOf(0)
 
-    val speed=5
+    val speed=7
 
     fun up() {
         if(state_y==-1){
             y-=90
             state_y+=1
         }
-        else if(state_y != 1) {
-            y -= 150
+        else if(state_y != 5 && state_y <=5) {
+            y -= 50
             state_y+=1
             //println("up")
         }
@@ -33,7 +32,7 @@ class me_data() {
             state_y-=1
             //println("down")
         }
-        if(state_y==1){
+        if(state_y>0){
             y+=speed
         }
     }
@@ -53,7 +52,7 @@ class me_data() {
     }
 
     fun drop(){
-        if(state_y==1 && y<land){
+        if(state_y>0 && y<land){
             y+=1
         }
         if(y+size_y==land){
@@ -86,14 +85,14 @@ open class enemy_data(type:String="land"){
 
 
     fun init(fx:Int=500,fy:Int){
-        println("enemy init")
+        //println("enemy init")
         if(mode=="land") {
-            x = fx
+            x = fx+size_x
             y = fy - size_y
             land = fy
         }
         else if(mode=="sky"){
-            x = fx
+            x = fx+size_x
             y = fy - size_y-100
             land = fy
         }
@@ -105,25 +104,32 @@ open class enemy_data(type:String="land"){
 }
 
 class game_data() {
-    var clock: Int = 0
+    var clock by mutableStateOf(0)
     var start by mutableStateOf(false)
     var finish by mutableStateOf(false)
     val land_h by mutableStateOf(350)
 
     var me_state = me_data()
     var enemy_state= mutableStateListOf<enemy_data>()
+    var last_e_clock=0
+    var interval=0
 
     fun starting() {
         start = true
-        enemy_state+=(enemy_data())
+        clock=0
         me_state.init(100,land_h)
+        last_e_clock=0
+        interval=(100..400).random()
+        enemy_state.add(enemy_data())
         for(enemies in enemy_state){
-            enemies.init(600,land_h)
+            enemies.init(fy=land_h)
         }
+        println(enemy_state[0])
     }
 
     fun finishing() {
         finish = true
+        enemy_state.clear()
     }
 
     fun reset() {
