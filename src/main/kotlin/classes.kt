@@ -12,7 +12,7 @@ class me_data() {
 
     var land by mutableStateOf(0)
 
-    val speed=7
+    val speed=10
 
     fun up() {
         if(state_y==-1){
@@ -52,8 +52,12 @@ class me_data() {
     }
 
     fun drop(){
-        if(state_y>0 && y<land){
+        if(state_y>0 && y+size_y<land){
             y+=1
+        }
+        if(state_y>0 && y+size_y>land){
+            y=land-size_y
+            state_y=0
         }
         if(y+size_y==land){
             state_y=0
@@ -70,36 +74,53 @@ class me_data() {
     }
 }
 
-open class enemy_data(type:String="land"){
+class enemy_data(typein:String="land",modein:String="straight"){
     var x by mutableStateOf(0)
     var y by mutableStateOf(0)
 
-    var size_x by mutableStateOf(150)
+    var size_x by mutableStateOf(130)
     var size_y by mutableStateOf(70)
 
     var land by mutableStateOf(0)
 
     val speed =3
+    val type=typein
+    val mode=modein
 
-    val mode=type
 
-
-    fun init(fx:Int=500,fy:Int){
+    open fun init(fx:Int=500, fy:Int){
         //println("enemy init")
-        if(mode=="land") {
+        if(type=="land") {
             x = fx+size_x
             y = fy - size_y
             land = fy
         }
-        else if(mode=="sky"){
+        else if(type=="sky"){
             x = fx+size_x
             y = fy - size_y-100
             land = fy
+        }else if(type=="under") {
+            x = fx + size_x;
+            y = fy - size_y + 60
+            land = fy
+        }
+    }
+
+    open fun move(modefun:String=mode){
+        if(modefun=="straight"){
+            straight()
+        }
+        if(modefun=="upper"){
+            upper()
         }
     }
 
     fun straight(){
         x+=-speed
+    }
+    fun upper(){
+        x+=speed
+        y-=speed
     }
 }
 
@@ -113,6 +134,7 @@ class game_data() {
     var enemy_state= mutableStateListOf<enemy_data>()
     var last_e_clock=0
     var interval=0
+    var interval_shrink=0
 
     fun starting() {
         start = true

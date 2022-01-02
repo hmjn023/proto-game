@@ -29,11 +29,12 @@ fun game() {
     }
 
     if (game_state.start && !game_state.finish) {
+        land_surface(game_state)
         bbox(game_state.me_state, game_state)
         for (enemies in game_state.enemy_state.filterNotNull()) {
             enemy(enemies)
         }
-        land_surface(game_state)
+
     }
 
     if(game_state.start && game_state.finish){
@@ -50,7 +51,9 @@ fun game() {
                     //Thread.sleep(1000/60)
                     for (enemies in game_state.enemy_state.filterNotNull()) {
                         touch(game_state.me_state, enemies, game_state)
-                        enemies.straight()
+                        //enemies.straight()
+                        println(enemies.mode)
+                        enemies.move()
                     }
                     if(game_state.enemy_state.size!=0){
                         for(enemies in game_state.enemy_state.filterNotNull()){
@@ -61,15 +64,28 @@ fun game() {
                         }
                     }
                     if(game_state.clock!=0 && game_state.clock-game_state.last_e_clock==game_state.interval) {
-                        if((0..1).random()==0){
-                            game_state.enemy_state.add(enemy_data())
+                        val rand=(0..2).random()
+                        if(rand==0){
+                            //game_state.enemy_state.add(enemy_data())
+                            game_state.enemy_state.add(enemy_data("land","upper"))
                         }
-                        else{
-                            game_state.enemy_state.add(enemy_data("sky"))
+                        else if(rand==1){
+                            //game_state.enemy_state.add(enemy_data("sky"))
+                            game_state.enemy_state.add(enemy_data("sky","upper"))
+                        }
+                        else if(rand==2){
+                            //game_state.enemy_state.add(enemy_data("under"))
+                            game_state.enemy_state.add(enemy_data("under","upper"))
                         }
                         game_state.last_e_clock=game_state.clock
-                        game_state.interval=(100..400).random()
+                        game_state.interval=(100..400-game_state.interval_shrink).random()
                         game_state.enemy_state[game_state.enemy_state.size - 1].init(fy=game_state.land_h)
+                    }
+                    if(game_state.clock!=0 && game_state.clock%50==0){
+                        if(game_state.interval_shrink<300) {
+                            game_state.interval_shrink += 3
+                        }
+                        println("shrink now ${game_state.interval_shrink}")
                     }
                     game_state.me_state.drop()
                     game_state.clock += 1
@@ -85,7 +101,7 @@ fun me(me_state: me_data) {
         Modifier
             .offset(me_state.x.dp,me_state.y.dp)
             .size(me_state.size_x.dp,me_state.size_y.dp)
-            //.background(Color.Blue)
+            .background(Color.Black)
     ) {
         Column {
             //Text(me_state.x.toString())
@@ -107,7 +123,7 @@ fun enemy(enemy_state:enemy_data){
       Modifier
           .offset(enemy_state.x.dp,enemy_state.y.dp)
           .size(enemy_state.size_x.dp,enemy_state.size_y.dp)
-          //.background(Color.Red)
+          .background(Color.Cyan)
     ){
         Column {
             //Text(enemy_state.x.toString())
@@ -192,6 +208,6 @@ fun start_buttom(game_state: game_data){
 fun land_surface(game_state: game_data){
     Box(modifier = Modifier.offset(0.dp,game_state.land_h.dp)
         .size(1000.dp,200.dp)
-        .background(Color.Black)
+        .background(Color.LightGray)
     )
 }
