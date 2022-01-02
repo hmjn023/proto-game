@@ -67,15 +67,19 @@ fun game() {
                         val rand=(0..2).random()
                         if(rand==0){
                             //game_state.enemy_state.add(enemy_data())
-                            game_state.enemy_state.add(enemy_data("land","upper"))
+                            game_state.enemy_state.add(enemy_data("land","straight"))
                         }
                         else if(rand==1){
                             //game_state.enemy_state.add(enemy_data("sky"))
-                            game_state.enemy_state.add(enemy_data("sky","upper"))
+                            game_state.enemy_state.add(enemy_data("sky","straight"))
                         }
                         else if(rand==2){
                             //game_state.enemy_state.add(enemy_data("under"))
-                            game_state.enemy_state.add(enemy_data("under","upper"))
+                            if((0..2).random()<=1){
+                                game_state.enemy_state.add(enemy_data("under","straight"))
+                            }else {
+                                game_state.enemy_state.add(enemy_data("under", "upper"))
+                            }
                         }
                         game_state.last_e_clock=game_state.clock
                         game_state.interval=(100..400-game_state.interval_shrink).random()

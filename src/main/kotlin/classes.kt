@@ -103,6 +103,9 @@ class enemy_data(typein:String="land",modein:String="straight"){
             x = fx + size_x;
             y = fy - size_y + 60
             land = fy
+            if(mode=="upper"){
+                x = fx
+            }
         }
     }
 
@@ -119,7 +122,7 @@ class enemy_data(typein:String="land",modein:String="straight"){
         x+=-speed
     }
     fun upper(){
-        x+=speed
+        x-=speed*2
         y-=speed
     }
 }
