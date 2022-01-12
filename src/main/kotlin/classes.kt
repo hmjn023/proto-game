@@ -47,7 +47,7 @@ class me_data() {
         }
     }
     fun left() {
-        if (state_x != -40) {
+        if (state_x != -10) {
             x -= speed
             state_x-=1
             //println("left")
@@ -91,7 +91,7 @@ class enemy_data(typein:String="land",modein:String="straight"){
     val mode=modein
 
 
-    open fun init(fx:Int=500, fy:Int){
+    fun init(fx:Int=500, fy:Int){
         //println("enemy init")
         if(type=="land") {
             x = fx+size_x
@@ -103,7 +103,7 @@ class enemy_data(typein:String="land",modein:String="straight"){
             y = fy - size_y-100
             land = fy
         }else if(type=="under") {
-            x = fx + size_x;
+            x = fx + size_x
             y = fy - size_y + 60
             land = fy
             if(mode=="upper"){
@@ -112,7 +112,7 @@ class enemy_data(typein:String="land",modein:String="straight"){
         }
     }
 
-    open fun move(modefun:String=mode){
+    fun move(modefun:String=mode){
         if(modefun=="straight"){
             straight()
         }
