@@ -1,4 +1,7 @@
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
 class me_data() {
     var size_x by mutableStateOf(50)
@@ -131,7 +134,7 @@ class game_data() {
     var clock by mutableStateOf(0)
     var start by mutableStateOf(false)
     var finish by mutableStateOf(false)
-    val land_h by mutableStateOf(350)
+    val land_h by mutableStateOf(680)
 
     var me_state = me_data()
     var enemy_state= mutableStateListOf<enemy_data>()
@@ -149,7 +152,7 @@ class game_data() {
         for(enemies in enemy_state){
             enemies.init(fy=land_h)
         }
-        println(enemy_state[0])
+        //println(enemy_state[0])
     }
 
     fun finishing() {
