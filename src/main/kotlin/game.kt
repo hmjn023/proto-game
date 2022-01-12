@@ -30,7 +30,15 @@ fun game() {
     }
 
     if (!game_state.start) {
-        start_buttom(game_state)
+            if (game_state.times == 0) {
+                Text(
+                    text = "ORIGINAL\nGAME",
+                    modifier = Modifier.offset(500.dp, 100.dp).size(1234.dp),
+                    fontSize = 100.sp
+                )
+            }
+            start_buttom(game_state)
+
     }
 
     if (game_state.start && !game_state.finish) {
@@ -49,10 +57,11 @@ fun game() {
 
     if(game_state.start && game_state.finish){
         Column {
+            /*
             Text(text = "result test",
                 Modifier.offset(500.dp,450.dp),
                 fontSize = 100.sp
-            )
+            )*/
             start_buttom(game_state)
         }
     }

@@ -142,6 +142,8 @@ class game_data() {
     var interval=0
     var interval_shrink=0
 
+    var times=0
+
     fun starting() {
         start = true
         clock=0

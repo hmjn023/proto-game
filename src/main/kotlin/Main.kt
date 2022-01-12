@@ -12,7 +12,8 @@ fun main()= singleWindowApplication(
 fun main(){
     application {
         Window(onCloseRequest = ::exitApplication,
-            state = WindowState(size= WindowSize(1000.dp,800.dp))
+            state = WindowState(size= WindowSize(1000.dp,800.dp)),
+            title = "chrome://dino"
         //state = rememberWindowState(WindowPlacement.Maximized)){
         ){
             game()
