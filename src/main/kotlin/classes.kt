@@ -100,7 +100,7 @@ class enemy_data(typein:String="land",modein:String="straight"){
         }
         else if(type=="sky"){
             x = fx+size_x
-            y = fy - size_y-100
+            y = fy - size_y-80
             land = fy
         }else if(type=="under") {
             x = fx + size_x

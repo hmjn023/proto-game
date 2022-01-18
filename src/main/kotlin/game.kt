@@ -1,5 +1,5 @@
-import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.HorizontalScrollbar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
@@ -10,13 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -25,24 +29,25 @@ import androidx.compose.ui.unit.sp
 fun game() {
     var game_state = remember { game_data() }
 
-    Column {
+    Column (){
         //Text(game_state.clock.toString())
     }
 
     if (!game_state.start) {
+        Column(modifier = Modifier.offset(250.dp, 200.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
             if (game_state.times == 0) {
                 Text(
                     text = "ORIGINAL\nGAME",
-                    modifier = Modifier.offset(500.dp, 100.dp).size(1234.dp),
+                    textAlign = TextAlign.Center,
                     fontSize = 100.sp
                 )
             }
             start_buttom(game_state)
-
+        }
     }
 
     if (game_state.start && !game_state.finish) {
-        //land_surface(game_state)
         Image(
             painter=painterResource("forestback1.png"),
             contentDescription = "forest",
@@ -56,12 +61,11 @@ fun game() {
     }
 
     if(game_state.start && game_state.finish){
-        Column {
-            /*
-            Text(text = "result test",
-                Modifier.offset(500.dp,450.dp),
-                fontSize = 100.sp
-            )*/
+        Column (Modifier.offset(80.dp,300.dp)
+        , horizontalAlignment =Alignment.CenterHorizontally){
+            Text(text = "YOUR SCORE:${game_state.clock.toString()}",
+                fontSize = 95.sp
+            )
             start_buttom(game_state)
         }
     }
@@ -224,13 +228,15 @@ fun touch(me_state: me_data,enemy_state: enemy_data,game_state:game_data){
 @Composable
 @Preview
 fun start_buttom(game_state: game_data){
-    Button(modifier = Modifier.offset(500.dp,400.dp),
+    Button(
+        modifier = Modifier.size(width = 200.dp,height = 100.dp ),
         onClick ={
             game_state.reset()
             game_state.starting()
         }
     ){
-            Text("start")
+            Text(text = "start",
+            fontSize = 40.sp)
     }
 }
 
