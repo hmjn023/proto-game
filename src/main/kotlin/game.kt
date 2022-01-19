@@ -29,13 +29,15 @@ import androidx.compose.ui.unit.sp
 fun game() {
     var game_state = remember { game_data() }
 
-    Column (){
+    Column() {
         //Text(game_state.clock.toString())
     }
 
     if (!game_state.start) {
-        Column(modifier = Modifier.offset(250.dp, 200.dp),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.offset(250.dp, 200.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             if (game_state.times == 0) {
                 Text(
                     text = "ORIGINAL\nGAME",
@@ -49,7 +51,7 @@ fun game() {
 
     if (game_state.start && !game_state.finish) {
         Image(
-            painter=painterResource("forestback1.png"),
+            painter = painterResource("forestback1.png"),
             contentDescription = "forest",
             modifier = Modifier.fillMaxSize()
         )
@@ -60,10 +62,12 @@ fun game() {
 
     }
 
-    if(game_state.start && game_state.finish){
-        Column (Modifier.offset(80.dp,300.dp)
-        , horizontalAlignment =Alignment.CenterHorizontally){
-            Text(text = "YOUR SCORE:${game_state.clock.toString()}",
+    if (game_state.start && game_state.finish) {
+        Column(
+            Modifier.offset(80.dp, 300.dp), horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "YOUR SCORE:${game_state.clock.toString()}",
                 fontSize = 95.sp
             )
             start_buttom(game_state)
@@ -72,13 +76,10 @@ fun game() {
 
     LaunchedEffect(Unit) {
         while (true) {
-            withFrameNanos() {
+            withFrameNanos(){
                 if (game_state.start && !game_state.finish) {
-                    Thread.sleep(1000/60)
-                    for (enemies in game_state.enemy_state.filterNotNull()) {
-                        touch(game_state.me_state, enemies, game_state)
-                        enemies.move()
-                    }
+                    Thread.sleep(1000 / 60)
+                    enemy_touch(game_state)
                     enemy_remove(game_state)
                     enemy_pop(game_state)
                     game_state.me_state.drop()
@@ -88,6 +89,7 @@ fun game() {
         }
     }
 }
+
 @Composable
 @Preview
 fun me(me_state: me_data) {
@@ -254,5 +256,12 @@ fun enemy_pop(game_state: game_data){
             game_state.interval_shrink += 3
         }
         //println("shrink now ${game_state.interval_shrink}")
+    }
+}
+
+fun enemy_touch(game_state: game_data) {
+    for (enemies in game_state.enemy_state.filterNotNull()) {
+        touch(game_state.me_state, enemies, game_state)
+        enemies.move()
     }
 }
