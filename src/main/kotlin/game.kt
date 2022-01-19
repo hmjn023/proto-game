@@ -79,14 +79,7 @@ fun game() {
                         touch(game_state.me_state, enemies, game_state)
                         enemies.move()
                     }
-                    if(game_state.enemy_state.size!=0){
-                        for(enemies in game_state.enemy_state.filterNotNull()){
-                            if(enemies.x+enemies.size_x<0){
-                                game_state.enemy_state.remove(enemies)
-                                //println("removed!!!")
-                            }
-                        }
-                    }
+                    enemy_remove(game_state)
                     if(game_state.clock!=0 && game_state.clock-game_state.last_e_clock==game_state.interval) {
                         val rand=(0..2).random()
                         if(rand==0){
@@ -247,4 +240,15 @@ fun land_surface(game_state: game_data){
         .size(1000.dp,200.dp)
         .background(Color.LightGray)
     )
+}
+
+fun enemy_remove(game_state: game_data){
+    if(game_state.enemy_state.size!=0){
+        for(enemies in game_state.enemy_state.filterNotNull()){
+            if(enemies.x+enemies.size_x<0){
+                game_state.enemy_state.remove(enemies)
+                println("removed!!!")
+            }
+        }
+    }
 }
