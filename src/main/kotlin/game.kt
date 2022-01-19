@@ -80,31 +80,7 @@ fun game() {
                         enemies.move()
                     }
                     enemy_remove(game_state)
-                    if(game_state.clock!=0 && game_state.clock-game_state.last_e_clock==game_state.interval) {
-                        val rand=(0..2).random()
-                        if(rand==0){
-                            game_state.enemy_state.add(enemy_data("land",))
-                        }
-                        else if(rand==1){
-                            game_state.enemy_state.add(enemy_data("sky"))
-                        }
-                        else if(rand==2){
-                            if((0..2).random()<=1){
-                                game_state.enemy_state.add(enemy_data("under"))
-                            }else {
-                                game_state.enemy_state.add(enemy_data("under", "upper"))
-                            }
-                        }
-                        game_state.last_e_clock=game_state.clock
-                        game_state.interval=(100..400-game_state.interval_shrink).random()
-                        game_state.enemy_state[game_state.enemy_state.size - 1].init(fy=game_state.land_h)
-                    }
-                    if(game_state.clock!=0 && game_state.clock%50==0){
-                        if(game_state.interval_shrink<300) {
-                            game_state.interval_shrink += 3
-                        }
-                        //println("shrink now ${game_state.interval_shrink}")
-                    }
+                    enemy_pop(game_state)
                     game_state.me_state.drop()
                     game_state.clock += 1
                 }
@@ -247,8 +223,36 @@ fun enemy_remove(game_state: game_data){
         for(enemies in game_state.enemy_state.filterNotNull()){
             if(enemies.x+enemies.size_x<0){
                 game_state.enemy_state.remove(enemies)
-                println("removed!!!")
+                //println("removed!!!")
             }
         }
+    }
+}
+
+fun enemy_pop(game_state: game_data){
+    if(game_state.clock!=0 && game_state.clock-game_state.last_e_clock==game_state.interval) {
+        val rand=(0..2).random()
+        if(rand==0){
+            game_state.enemy_state.add(enemy_data("land",))
+        }
+        else if(rand==1){
+            game_state.enemy_state.add(enemy_data("sky"))
+        }
+        else if(rand==2){
+            if((0..2).random()<=1){
+                game_state.enemy_state.add(enemy_data("under"))
+            }else {
+                game_state.enemy_state.add(enemy_data("under", "upper"))
+            }
+        }
+        game_state.last_e_clock=game_state.clock
+        game_state.interval=(100..400-game_state.interval_shrink).random()
+        game_state.enemy_state[game_state.enemy_state.size - 1].init(fy=game_state.land_h)
+    }
+    if(game_state.clock!=0 && game_state.clock%50==0){
+        if(game_state.interval_shrink<300) {
+            game_state.interval_shrink += 3
+        }
+        //println("shrink now ${game_state.interval_shrink}")
     }
 }
