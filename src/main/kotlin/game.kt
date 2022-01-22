@@ -1,5 +1,4 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.HorizontalScrollbar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
@@ -15,10 +14,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
-import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -82,6 +79,9 @@ fun game() {
                     enemy_touch(game_state)
                     enemy_remove(game_state)
                     enemy_pop(game_state)
+                    if(game_state.me_state.state_jump==1){
+                        game_state.me_state.jump(game_state)
+                    }
                     game_state.me_state.drop()
                     game_state.clock += 1
                 }
@@ -154,7 +154,8 @@ fun bbox(me_state:me_data,game_state: game_data) {
                 .onKeyEvent {
                     when {
                         (it.key == Key.W && it.type == KeyEventType.KeyDown) -> {
-                            me_state.up()
+                            //me_state.up()
+                            me_state.jump(game_state)
                             true
                         }
                         (it.key == Key.S && it.type == KeyEventType.KeyDown) -> {

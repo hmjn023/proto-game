@@ -2,6 +2,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.input.key.Key
 
 class me_data() {
     var size_x by mutableStateOf(50)
@@ -16,6 +17,11 @@ class me_data() {
     var land by mutableStateOf(0)
 
     val speed=10
+    var clock_tmp=0
+    var state_jump=0
+    var state_right=0
+    var state_left=0
+    var jumps=30
 
     fun up() {
         if(state_y==-1){
@@ -39,6 +45,7 @@ class me_data() {
             y+=speed
         }
     }
+
     fun right() {
         if (state_x != 40) {
             x += speed
@@ -51,6 +58,24 @@ class me_data() {
             x -= speed
             state_x-=1
             //println("left")
+        }
+    }
+
+    fun jump(game_state: game_data){
+        if(state_jump==0){
+            state_jump=1
+            clock_tmp=game_state.clock
+        }
+        if(state_jump==1){
+            y -= jumps
+            Thread.sleep(80)
+            jumps-=game_state.gravity*(game_state.clock-clock_tmp)
+            if(y>=game_state.land_h-size_y){
+                state_jump=0
+                jumps=35
+                y=land-size_y
+                println("$jumps $y")
+            }
         }
     }
 
@@ -141,6 +166,8 @@ class game_data() {
     var last_e_clock=0
     var interval=0
     var interval_shrink=0
+
+    val gravity=1
 
     var times=0
 
