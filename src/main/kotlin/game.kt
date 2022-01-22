@@ -79,9 +79,12 @@ fun game() {
                     enemy_touch(game_state)
                     enemy_remove(game_state)
                     enemy_pop(game_state)
+                    /*
                     if(game_state.me_state.state_jump==1){
                         game_state.me_state.jump(game_state)
                     }
+
+                     */
                     game_state.me_state.drop()
                     game_state.clock += 1
                 }
@@ -100,11 +103,27 @@ fun me(me_state: me_data) {
             .background(Color.LightGray)
     ) {
         Column {
-            Image(
-                painter=painterResource("president.png"),
-                contentDescription = "win",
-                modifier = Modifier.fillMaxSize()
-            )
+            if(me_state.state_y==0) {
+                Image(
+                    painter = painterResource("president.png"),
+                    contentDescription = "win",
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            else if(me_state.state_y==-1){
+                Image(
+                    painter = painterResource("syagami.png"),
+                    contentDescription = "win",
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+            else{
+                Image(
+                    painter = painterResource("fly.png"),
+                    contentDescription = "win",
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 }
@@ -154,8 +173,8 @@ fun bbox(me_state:me_data,game_state: game_data) {
                 .onKeyEvent {
                     when {
                         (it.key == Key.W && it.type == KeyEventType.KeyDown) -> {
-                            //me_state.up()
-                            me_state.jump(game_state)
+                            me_state.up()
+                            //me_state.jump(game_state)
                             true
                         }
                         (it.key == Key.S && it.type == KeyEventType.KeyDown) -> {

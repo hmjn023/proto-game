@@ -19,13 +19,17 @@ class me_data() {
     val speed=10
     var clock_tmp=0
     var state_jump=0
-    var state_right=0
-    var state_left=0
     var jumps=30
 
     fun up() {
+        println(state_y)
         if(state_y==-1){
-            y-=90
+            //y-=90
+
+            val tmp =size_x
+            size_x=size_y
+            size_y=tmp
+            y-=50
             state_y+=1
         }
         else if(state_y != 5 && state_y <=5) {
@@ -36,12 +40,19 @@ class me_data() {
     }
 
     fun down() {
+        println(state_y)
         if (state_y ==0) {
-            y += 90
+            //y += 90
+
+            val tmp =size_x
+            size_x=size_y
+            size_y=tmp
+            y+=50
             state_y-=1
+
             //println("down")
         }
-        if(state_y>0){
+        else if(state_y>0){
             y+=speed
         }
     }
@@ -61,24 +72,6 @@ class me_data() {
         }
     }
 
-    fun jump(game_state: game_data){
-        if(state_jump==0){
-            state_jump=1
-            clock_tmp=game_state.clock
-        }
-        if(state_jump==1){
-            y -= jumps
-            Thread.sleep(80)
-            jumps-=game_state.gravity*(game_state.clock-clock_tmp)
-            if(y>=game_state.land_h-size_y){
-                state_jump=0
-                jumps=35
-                y=land-size_y
-                println("$jumps $y")
-            }
-        }
-    }
-
     fun drop(){
         if(state_y>0 && y+size_y<land){
             y+=1
@@ -87,7 +80,7 @@ class me_data() {
             y=land-size_y
             state_y=0
         }
-        if(y+size_y==land){
+        if(y+size_y==land && state_y>=0){
             state_y=0
         }
     }
@@ -97,6 +90,8 @@ class me_data() {
         x=fx
         y=fy-size_y
         land=fy
+        size_x=50
+        size_y=100
         state_x=0
         state_y=0
     }
