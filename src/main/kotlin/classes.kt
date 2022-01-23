@@ -2,7 +2,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.input.key.Key
 
 class me_data() {
     var size_x by mutableStateOf(50)
@@ -17,15 +16,10 @@ class me_data() {
     var land by mutableStateOf(0)
 
     val speed=10
-    var clock_tmp=0
-    var state_jump=0
-    var jumps=30
 
     fun up() {
         println(state_y)
         if(state_y==-1){
-            //y-=90
-
             val tmp =size_x
             size_x=size_y
             size_y=tmp
@@ -35,22 +29,17 @@ class me_data() {
         else if(state_y != 5 && state_y <=5) {
             y -= 50
             state_y+=1
-            //println("up")
         }
     }
 
     fun down() {
         println(state_y)
         if (state_y ==0) {
-            //y += 90
-
             val tmp =size_x
             size_x=size_y
             size_y=tmp
             y+=50
             state_y-=1
-
-            //println("down")
         }
         else if(state_y>0){
             y+=speed
@@ -61,14 +50,13 @@ class me_data() {
         if (state_x != 40) {
             x += speed
             state_x+=1
-            //println("right")
         }
     }
+
     fun left() {
         if (state_x != -10) {
             x -= speed
             state_x-=1
-            //println("left")
         }
     }
 
@@ -86,7 +74,6 @@ class me_data() {
     }
 
     fun init(fx:Int=100,fy:Int){
-        println("me init")
         x=fx
         y=fy-size_y
         land=fy
@@ -112,7 +99,6 @@ class enemy_data(typein:String="land",modein:String="straight"){
 
 
     fun init(fx:Int=500, fy:Int){
-        //println("enemy init")
         if(type=="land") {
             x = fx+size_x
             y = fy - size_y
@@ -162,8 +148,6 @@ class game_data() {
     var interval=0
     var interval_shrink=0
 
-    val gravity=1
-
     var times=0
 
     fun starting() {
@@ -176,7 +160,6 @@ class game_data() {
         for(enemies in enemy_state){
             enemies.init(fy=land_h)
         }
-        //println(enemy_state[0])
     }
 
     fun finishing() {

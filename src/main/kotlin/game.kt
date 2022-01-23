@@ -37,7 +37,7 @@ fun game() {
         ) {
             if (game_state.times == 0) {
                 Text(
-                    text = "ORIGINAL\nGAME",
+                    text = "DODGE\nANIMALS",
                     textAlign = TextAlign.Center,
                     fontSize = 100.sp
                 )
@@ -79,12 +79,6 @@ fun game() {
                     enemy_touch(game_state)
                     enemy_remove(game_state)
                     enemy_pop(game_state)
-                    /*
-                    if(game_state.me_state.state_jump==1){
-                        game_state.me_state.jump(game_state)
-                    }
-
-                     */
                     game_state.me_state.drop()
                     game_state.clock += 1
                 }
@@ -174,7 +168,6 @@ fun bbox(me_state:me_data,game_state: game_data) {
                     when {
                         (it.key == Key.W && it.type == KeyEventType.KeyDown) -> {
                             me_state.up()
-                            //me_state.jump(game_state)
                             true
                         }
                         (it.key == Key.S && it.type == KeyEventType.KeyDown) -> {
@@ -245,7 +238,6 @@ fun enemy_remove(game_state: game_data){
         for(enemies in game_state.enemy_state.filterNotNull()){
             if(enemies.x+enemies.size_x<0){
                 game_state.enemy_state.remove(enemies)
-                //println("removed!!!")
             }
         }
     }
@@ -275,7 +267,6 @@ fun enemy_pop(game_state: game_data){
         if(game_state.interval_shrink<300) {
             game_state.interval_shrink += 3
         }
-        //println("shrink now ${game_state.interval_shrink}")
     }
 }
 
